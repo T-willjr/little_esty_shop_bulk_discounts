@@ -16,14 +16,11 @@ class InvoiceItem < ApplicationRecord
   end
 
 
-  def best_discount(total, elgible_discounts)
-    discount = elgible_discounts
+  def discount_used
+    item.bulk_discounts
+    .where('? >= quantity_threshold', quantity)
     .order(percentage: :desc)
     .limit(1)
-    .pluck(:percentage)[0]
-
-    percent = discount.to_f / 100
-
-    total * percent
+    .pluck(:id).first
   end
 end
