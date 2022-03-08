@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   end
 
   get "/merchant/:id/:bulk_discount_id", to: "bulk_discounts#show"
+  get "/merchant/:id/bulk_discount/new", to: "bulk_discounts#new"
+  post "/merchant/:id/bulk_discount", to: "bulk_discounts#create"
 
   namespace :admin do
     resources :dashboard, only: [:index]
