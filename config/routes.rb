@@ -5,10 +5,11 @@ Rails.application.routes.draw do
     resources :items, except: [:destroy]
     resources :item_status, only: [:update]
     resources :invoices, only: [:index, :show, :update]
-    resources :bulk_discounts, only: [:index, :show, :destroy]
+    resources :bulk_discounts, only: [:index, :show, :destroy, :update]
   end
 
   get "/merchant/:id/:bulk_discount_id", to: "bulk_discounts#show"
+  get "/merchant/:id/:bulk_discount_id/edit", to: "bulk_discounts#edit"
   get "/merchant/:id/bulk_discount/new", to: "bulk_discounts#new"
   post "/merchant/:id/bulk_discount", to: "bulk_discounts#create"
 
