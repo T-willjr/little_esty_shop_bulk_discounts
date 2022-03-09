@@ -5,9 +5,9 @@ RSpec.describe 'Bulk Discount Show Page' do
     @merchant1 = Merchant.create!(name: 'Hair Care')
     @merchant2 = Merchant.create!(name: 'Skin Care')
 
-    @bulk_discount = @merchant1.bulk_discounts.create!(name: "Discount A", percentage: 20, quantity_threshold: 10)
-    @bulk_discount2 = @merchant1.bulk_discounts.create!(name: "Discount B", percentage: 30, quantity_threshold: 15)
-    @bulk_discount3 = @merchant2.bulk_discounts.create!(name: "Discount C", percentage: 35, quantity_threshold: 25)
+    @bulk_discount = BulkDiscount.create!(name: "Discount A", percentage: 20, quantity_threshold: 10, merchant_id: @merchant1.id)
+    @bulk_discount2 = BulkDiscount.create!(name: "Discount B", percentage: 30, quantity_threshold: 15, merchant_id: @merchant1.id)
+    @bulk_discount3 = BulkDiscount.create!(name: "Discount C", percentage: 35, quantity_threshold: 25, merchant_id: @merchant1.id)
 
     visit merchant_dashboard_index_path(@merchant1)
   end
