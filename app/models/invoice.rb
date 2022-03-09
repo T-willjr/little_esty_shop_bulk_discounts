@@ -27,11 +27,27 @@ class Invoice < ApplicationRecord
       money_saved = 0
       array.each do |invoice_item|
         elgible_discounts = invoice_item.item.bulk_discounts.where('? >= quantity_threshold', invoice_item.quantity)
-        
+
         total = invoice_item.quantity * invoice_item.unit_price
-        money_saved += invoice_item.best_discount(total, elgible_discounts)
+        money_saved += best_discount(total, elgible_discounts)
       end
     end
     total_revenue - money_saved
+  end
+
+  def best_discount(total, elgible_discounts)
+    discount_percentage = elgible_discounts
+    .order(percentage: :desc)
+    .limit(1)
+    .pluck(:percentage)[0]
+
+    discount_id = elgible_discounts
+    .order(percentage: :desc)
+    .limit(1)
+    .pluck(:id).first
+
+    percent = discount_percentage.to_f / 100
+
+    total * percent
   end
 end
