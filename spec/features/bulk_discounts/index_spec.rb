@@ -70,6 +70,15 @@ RSpec.describe 'Bulk Discount Index Page' do
     click_on(@bulk_discount.name)
     expect(current_path).to eq("/merchant/#{@merchant1.id}/#{@bulk_discount.id}")
   end
+  
+  it "has a section for upcoming holidays" do
+    click_on("View all Discounts")
+
+    holidays = HolidaySearchFacade.new
+    holidays.holiday_information[0..2].each do |holiday|
+      expect(page).to have_content(holiday.name)
+      expect(page).to have_content(holiday.date)
+   end
 
   it "has a link to create a new discount" do
     click_on("View all Discounts")
