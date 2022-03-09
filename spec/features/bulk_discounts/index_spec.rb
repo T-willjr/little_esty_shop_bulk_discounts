@@ -70,7 +70,7 @@ RSpec.describe 'Bulk Discount Index Page' do
     click_on(@bulk_discount.name)
     expect(current_path).to eq("/merchant/#{@merchant1.id}/#{@bulk_discount.id}")
   end
-
+  
   it "has a section for upcoming holidays" do
     click_on("View all Discounts")
 
@@ -78,6 +78,18 @@ RSpec.describe 'Bulk Discount Index Page' do
     holidays.holiday_information[0..2].each do |holiday|
       expect(page).to have_content(holiday.name)
       expect(page).to have_content(holiday.date)
-    end
+   end
+
+  it "has a link to create a new discount" do
+    click_on("View all Discounts")
+    click_on("Create New Discount")
+    expect(current_path).to eq("/merchant/#{@merchant1.id}/bulk_discount/new")
+
+    fill_in "Name", with: "Discount E"
+    fill_in "Percentage", with: "17"
+    fill_in "Quantity Threshold", with: "25"
+    click_button "Submit"
+
+    expect(current_path).to eq("/merchant/#{@merchant1.id}/bulk_discounts")
   end
 end
