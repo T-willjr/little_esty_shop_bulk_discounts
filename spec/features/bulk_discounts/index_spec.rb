@@ -1,5 +1,4 @@
 require 'rails_helper'
-require './lib/holiday_search'
 
 RSpec.describe 'Bulk Discount Index Page' do
   before :each do
@@ -75,7 +74,7 @@ RSpec.describe 'Bulk Discount Index Page' do
   it "has a section for upcoming holidays" do
     click_on("View all Discounts")
 
-    holidays = HolidaySearch.new
+    holidays = HolidaySearchFacade.new
     holidays.holiday_information[0..2].each do |holiday|
       expect(page).to have_content(holiday.name)
       expect(page).to have_content(holiday.date)
