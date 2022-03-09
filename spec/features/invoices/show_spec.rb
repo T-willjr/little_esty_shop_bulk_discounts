@@ -100,4 +100,29 @@ RSpec.describe 'invoices show' do
      end
   end
 
+
+  it "shows the total discounted revenue for this invoice" do
+    merchant = Merchant.create!(name: 'Jewelry')
+
+    item_1 = Item.create!(name: "Shampoo", description: "This washes your elbows", unit_price: 10, merchant_id: merchant.id, status: 1)
+    item_2 = Item.create!(name: "Butterfly Clip", description: "This holds up your elbow but in a clip", unit_price: 5, merchant_id: merchant.id)
+
+
+    customer_1 = Customer.create!(first_name: 'Joey', last_name: 'Smith')
+
+    invoice_a = Invoice.create!(customer_id: customer_1.id, status: 2, created_at: "2012-03-27 14:54:09")
+
+    ii_1 = InvoiceItem.create!(invoice_id: invoice_a.id, item_id: item_1.id, quantity: 12, unit_price: 10, status: 2)
+    ii_2 = InvoiceItem.create!(invoice_id: invoice_a.id, item_id: item_2.id, quantity: 15, unit_price: 10, status: 1)
+
+
+
+    bulk_discount = BulkDiscount.find_or_create_by!(name: "Discount A", percentage: 20, quantity_threshold: 10, merchant_id: merchant.id)
+    bulk_discount2 = BulkDiscount.find_or_create_by!(name: "Discount B", percentage: 30, quantity_threshold: 15, merchant_id: merchant.id)
+
+    visit merchant_invoice_path(merchant, invoice_a)
+
+    expect(page).to have_content(invoice_a.total_discounted_revenue)
+  end
+
 end
