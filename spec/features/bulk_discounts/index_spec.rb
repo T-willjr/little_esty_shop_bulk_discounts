@@ -9,7 +9,7 @@ RSpec.describe 'Bulk Discount Index Page' do
     @bulk_discount2 = @merchant1.bulk_discounts.create!(name: "Discount B", percentage: 30, quantity_threshold: 15)
     @bulk_discount3 = @merchant2.bulk_discounts.create!(name: "Discount C", percentage: 35, quantity_threshold: 25)
     @bulk_discount4 = @merchant2.bulk_discounts.create!(name: "Discount D", percentage: 10, quantity_threshold: 10)
-
+    @bulk_discount4 = @merchant2.bulk_discounts.create!(name: "Discount Z", percentage: 10, quantity_threshold: 10)
 
     @customer_1 = Customer.create!(first_name: 'Joey', last_name: 'Smith')
     @customer_2 = Customer.create!(first_name: 'Cecilia', last_name: 'Jones')
@@ -100,5 +100,28 @@ RSpec.describe 'Bulk Discount Index Page' do
     expect(page).to_not have_content(@bulk_discount.name)
     expect(page).to have_content(@bulk_discount2.name)
     expect(current_path).to eq("/merchant/#{@merchant1.id}/bulk_discounts")
+  end
+
+  it "has a link to edit a discount" do
+    click_on("View all Discounts")
+
+    click_on("Edit Discount", match: :first)
+
+    expect(current_path).to eq("/merchant/#{@merchant1.id}/#{@bulk_discount.id}/edit")
+
+    fill_in "Name", with: "Discount G"
+    fill_in "Percentage", with: "22"
+    fill_in "Quantity Threshold", with: "31"
+    click_button "Update"
+
+    within("#discount-#{@bulk_discount.id}") do
+      expect(page).to_not have_content(@bulk_discount.name)
+      expect(page).to_not have_content(@bulk_discount.percentage)
+      expect(page).to_not have_content(@bulk_discount.quantity_threshold)
+      expect(page).to have_content("Discount G")
+      expect(page).to have_content("22")
+      expect(page).to have_content("31")
+      expect(current_path).to eq("/merchant/#{@merchant1.id}/bulk_discounts")
+    end
   end
 end
