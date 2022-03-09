@@ -1,8 +1,4 @@
-require './lib/holiday'
-require './lib/holiday_service'
-require 'pry'
-
-class HolidaySearch
+class HolidaySearchFacade
 
   def holiday_information
     service.holidays.map do |data|

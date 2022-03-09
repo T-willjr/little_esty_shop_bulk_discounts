@@ -1,9 +1,7 @@
-require './lib/holiday_search'
-
 class BulkDiscountsController < ApplicationController
   def index
     @merchant = Merchant.find(params[:merchant_id])
-    @holidays = HolidaySearch.new
+    @holidays = HolidaySearchFacade.new
   end
 
   def show

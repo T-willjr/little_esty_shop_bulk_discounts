@@ -1,6 +1,3 @@
-require 'httparty'
-require 'json'
-
 class HolidayService
 
   def holidays
